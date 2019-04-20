@@ -9,7 +9,7 @@ import (
 	"syscall"
 )
 
-const tgEndpoint = "https://api.telegram.org/bot711908048:AAGiRadEwO3cG93QtPKCn8ebBn2dj3JFPEU/"
+const tgEndpoint = "https://api.telegram.org/bot<token>/"
 
 func main() {
 	sigchan := make(chan os.Signal, 2)
