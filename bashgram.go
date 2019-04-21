@@ -67,4 +67,5 @@ func main() {
 	}
 	pool.Wait()
 	//}
+fmt.Println("Exiting...")
 }
