@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -13,19 +14,36 @@ import (
 	"syscall"
 )
 
-type safeStore struct {
-	mutex    sync.Mutex
-	lastUpds [10]uint
+type APIResponse struct {
+	Ok     bool            `json:"ok"`
+	Result json.RawMessage `json:"result"`
+}
+
+type Update struct {
+	UpdateID int      `json:"update_id"`
+	Message  *Message `json:"message"`
+}
+
+type Message struct {
+	MessageID int    `json:"message_id"`
+	Date      int    `json:"date"`
+	Chat      *Chat  `json:"chat"`
+	Text      string `json:"text"`
+}
+
+type Chat struct {
+	ID   int64  `json:"id"`
+	Type string `json:"type"`
 }
 
 const (
-	tgEndpoint = "https://api.telegram.org/bot<token>/"
-	yourID     = <your ID>
+	tgEndpoint = "https://api.telegram.org/bot711908048:AAGiRadEwO3cG93QtPKCn8ebBn2dj3JFPEU/"
+	yourID     = 147454189
 )
 
 func main() {
 	sigchan := make(chan os.Signal, 1)
-	signal.Notify(sigchan, syscall.SIGINT, syscall.SIGKILL)
+	signal.Notify(sigchan, syscall.SIGINT, syscall.SIGKILL, syscall.SIGTERM)
 	pool := sync.WaitGroup{}
 	lastUpd := 0
 mainLoop:
@@ -53,14 +71,9 @@ mainLoop:
 									pool.Add(1)
 									go func(upd Update, pool *sync.WaitGroup) {
 										defer pool.Done()
-										subpr := exec.Command("bash", "-c", `"`+upd.Message.Text+`"`)
 										fmt.Println("Replying to update number", upd.UpdateID)
-										/*if pipe, err := subpr.StdinPipe(); err != nil {
-											fmt.Println(err)
-											return
-										} else {
-											io.WriteString(pipe, upd.Message.Text)
-										}*/
+										subpr := exec.Command("bash")
+										subpr.Stdin = bytes.NewBufferString(upd.Message.Text)
 										var out string
 										if outbytes, err := subpr.CombinedOutput(); err == nil {
 											out = string(outbytes)

@@ -1,6 +1,6 @@
 package main
 
-import "encoding/json"
+/*import "encoding/json"
 
 type APIResponse struct {
 	Ok     bool            `json:"ok"`
@@ -22,4 +22,4 @@ type Message struct {
 type Chat struct {
 	ID   int64  `json:"id"`
 	Type string `json:"type"`
-}
+}*/
