@@ -15,8 +15,8 @@ import (
 )
 
 const (
-	tgEndpoint = "https://api.telegram.org/bot711908048:AAGiRadEwO3cG93QtPKCn8ebBn2dj3JFPEU/"
-	yourID     = 147454189
+	tgEndpoint = "https://api.telegram.org/bot<token>/"
+	yourID     = your ID
 )
 
 func main() {
