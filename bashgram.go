@@ -14,36 +14,14 @@ import (
 	"syscall"
 )
 
-type APIResponse struct {
-	Ok     bool            `json:"ok"`
-	Result json.RawMessage `json:"result"`
-}
-
-type Update struct {
-	UpdateID int      `json:"update_id"`
-	Message  *Message `json:"message"`
-}
-
-type Message struct {
-	MessageID int    `json:"message_id"`
-	Date      int    `json:"date"`
-	Chat      *Chat  `json:"chat"`
-	Text      string `json:"text"`
-}
-
-type Chat struct {
-	ID   int64  `json:"id"`
-	Type string `json:"type"`
-}
-
 const (
 	tgEndpoint = "https://api.telegram.org/bot711908048:AAGiRadEwO3cG93QtPKCn8ebBn2dj3JFPEU/"
 	yourID     = 147454189
 )
 
 func main() {
-	sigchan := make(chan os.Signal, 1)
-	signal.Notify(sigchan, syscall.SIGINT, syscall.SIGKILL, syscall.SIGTERM)
+	sigchan := make(chan os.Signal)
+	signal.Notify(sigchan, os.Interrupt, os.Kill, syscall.SIGTERM, syscall.SIGSTOP, syscall.SIGTSTP, syscall.SIGABRT)
 	pool := sync.WaitGroup{}
 	lastUpd := 0
 mainLoop:
